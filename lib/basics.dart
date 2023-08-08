@@ -376,6 +376,7 @@ main() {
   print(welcome.contains("flutter"));
   print(welcome.contains("Flutter"));
   print(welcome.substring(8,10));
+  print(welcome.substring(8));
 
   String email = " amir@gmail.com ";
   print(email.length);
@@ -406,4 +407,30 @@ main() {
   }
   phoneNumber = phoneNumber.replaceAll(" ", "").replaceAll("-", "");
   print(phoneNumber);
+
+  print('--------------------');
+  // Casting
+  // String => int
+  // String => double
+  // int => double
+  // double => int
+  // double => String
+  // int => String
+
+  String strNumber = "10";
+  int number5 = 1;
+  double number6 = 1.2;
+
+  // print(int.parse(strNumber));
+  int finalIntParsing = int.tryParse(strNumber) ?? 0;
+  print(finalIntParsing);
+
+  // print(double.parse(strNumber));
+  print(double.tryParse(strNumber) ?? int.tryParse(strNumber) ?? 0);
+
+  print(number5.toString());
+  print(number5.toDouble());
+
+  print(number6.toString());
+  print(number6.toInt());
 }
