@@ -8,13 +8,39 @@
 // ClassName objectName = ClassName();
 
 import 'package:instant1/person.dart';
+import 'package:instant1/phone.dart';
 
 main() {
-  Person person1 = Person(
+  Phone phone1 = Phone.iOS(
+    name: "S20",
+    price: 15000,
+  );
+  // phone1.os = "iOS"; // WRONG
+
+  print(phone1.getOperatingSystem());
+  print(phone1.getPrice());
+
+  phone1.setPrice(-10000);
+
+  print(phone1.getPrice());
+
+
+
+
+
+
+  Person person1 = Person.male(
     name: "Ahmed",
     age: "18",
     city: "Cairo",
     streetName: 'Tahrir',
+  );
+
+  Person person2 = Person.female(
+    name: "Nora",
+    age: "10",
+    city: "Giza",
+    streetName: "Haram",
   );
 
   String name1 = "One";
