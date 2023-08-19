@@ -44,4 +44,16 @@ class Phone {
     _price = value;
   }
 
+  void printData(){
+    print('---------------------');
+    print('Name : $name');
+    print('OS : $_os');
+    print('Price : $_price');
+    print('---------------------');
+  }
+
+  @override
+  String toString() {
+    return 'Phone{name: $name, _os: $_os, _price: $_price}';
+  }
 }
