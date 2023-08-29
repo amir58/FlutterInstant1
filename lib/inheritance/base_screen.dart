@@ -1,6 +1,12 @@
 // Super class
 // Parent class
 class BaseScreen {
+  final String _screenName;
+
+  BaseScreen(this._screenName) {
+    print('Current screen => $_screenName');
+  }
+
   void checkInternet() {
     // CODE
   }
@@ -9,7 +15,9 @@ class BaseScreen {
 
   void getData() {}
 
-  void showLoadingAnimation() {}
+  void showLoadingAnimation() {
+    print('Circle animation');
+  }
 
   void hideLoadingAnimation() {}
 

@@ -31,4 +31,19 @@ main() {
   for (var phone in phones) {
     phone.printData();
   }
+
+
+
+
+
+  // Final vs Constant
+
+  final numberOne = 1; // Runtime
+  const numberTwo = 1; // Compile time
+
+  // numberOne = 5; // WRONG
+  // numberTwo = 5; // WRONG
+
+
+
 }

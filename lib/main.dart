@@ -18,13 +18,16 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   // Layouts => Column, Row, Stack
-  // Widget or Widgets
-  // Widget  => child
-  // Widgets => children
+  bool obscureText = true;
 
   @override
   Widget build(BuildContext context) {
@@ -45,11 +48,22 @@ class LoginScreen extends StatelessWidget {
             ),
             const SizedBox(height: 15),
             TextFormField(
-              obscureText: true,
-              decoration: const InputDecoration(
+              obscureText: obscureText,
+              decoration: InputDecoration(
                 labelText: 'Password',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.lock),
+                border: const OutlineInputBorder(),
+                prefixIcon: const Icon(Icons.lock),
+                suffixIcon: IconButton(
+                  onPressed: () {
+                    obscureText = !obscureText;
+                    setState(() {});
+                  },
+                  icon: Icon(
+                    obscureText
+                        ? Icons.visibility_off
+                        : Icons.visibility,
+                  ),
+                ),
               ),
             ),
             const SizedBox(height: 15),
@@ -80,7 +94,7 @@ class LoginScreen extends StatelessWidget {
   navToRegisterScreen(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => RegisterScreen()),
+      MaterialPageRoute(builder: (context) => const RegisterScreen()),
     );
   }
 }

@@ -1,9 +1,12 @@
 import 'package:instant1/inheritance/base_screen.dart';
+
 // Sub class
 // Child class
-class HomeScreen extends BaseScreen{
+class HomeScreen extends BaseScreen {
+  HomeScreen() : super("HomeScreen");
 
-  void execute(){
+  
+  void execute() {
     super.checkInternet();
     // false
     super.showNetworkErrorMessage();
@@ -16,5 +19,4 @@ class HomeScreen extends BaseScreen{
 
     // super._updateUi();
   }
-
 }
