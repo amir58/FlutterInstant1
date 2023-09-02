@@ -22,4 +22,10 @@ class FavScreen extends BaseScreen{
     // super.showLoadingAnimation();
     print('Heart animation');
   }
+
+  @override
+  void getData() {
+    // TODO: implement getData
+  }
+
 }

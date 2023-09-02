@@ -13,7 +13,72 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: const LoginScreen(),
+      home: const ExpandScreen(),
+    );
+  }
+}
+
+class ExpandScreen extends StatelessWidget {
+  const ExpandScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: Column(
+        children: [
+          // 3 / 6
+          Expanded(
+            flex: 3,
+            child: Container(
+              color: Colors.black,
+              height: 100,
+            ),
+          ),
+          // 1  / 6
+          Expanded(
+            child: Container(
+              color: Colors.blue,
+              height: 100,
+            ),
+          ),
+          Expanded(
+            child: Row(
+              children: [
+                // Total = 4
+                Expanded(
+                  // 1 /4
+                  child: Container(
+                    color: Colors.red,
+                    width: 100,
+                  ),
+                ),
+                Expanded(
+                  // 2 /4
+                  flex: 2,
+                  child: Container(
+                    color: Colors.blueGrey,
+                    width: 100,
+                  ),
+                ),
+                Expanded(
+                  // 1/4
+                  child: Container(
+                    color: Colors.pink,
+                    width: 100,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: Container(
+              color: Colors.green,
+              height: 100,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -38,6 +103,10 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
+          // Vertical   => Main
+          // Horizontal => Cross
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextFormField(
               decoration: const InputDecoration(
@@ -59,31 +128,37 @@ class _LoginScreenState extends State<LoginScreen> {
                     setState(() {});
                   },
                   icon: Icon(
-                    obscureText
-                        ? Icons.visibility_off
-                        : Icons.visibility,
+                    obscureText ? Icons.visibility_off : Icons.visibility,
                   ),
                 ),
               ),
             ),
             const SizedBox(height: 15),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  print('Login pressed');
-                },
-                style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
-                child: const Text("Login"),
-              ),
-            ),
-            SizedBox(
-              width: double.infinity,
-              child: OutlinedButton(
-                onPressed: () => navToRegisterScreen(context),
-                style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
-                child: const Text("Register"),
-              ),
+            Row(
+              // Main  => Horizontal
+              // Cross => Vertical
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      print('Login pressed');
+                    },
+                    style:
+                        ElevatedButton.styleFrom(shape: const StadiumBorder()),
+                    child: const Text("Login"),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: () => navToRegisterScreen(context),
+                    style:
+                        ElevatedButton.styleFrom(shape: const StadiumBorder()),
+                    child: const Text("Register"),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

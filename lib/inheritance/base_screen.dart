@@ -1,6 +1,6 @@
 // Super class
 // Parent class
-class BaseScreen {
+abstract class BaseScreen {
   final String _screenName;
 
   BaseScreen(this._screenName) {
@@ -13,7 +13,7 @@ class BaseScreen {
 
   void showNetworkErrorMessage() {}
 
-  void getData() {}
+  void getData(); // Make this abstract
 
   void showLoadingAnimation() {
     print('Circle animation');
