@@ -1,18 +1,17 @@
 import 'package:instant1/inheritance/base_screen.dart';
+import 'package:instant1/inheritance/slider_mixin.dart';
 
 main() {
   FavScreen favScreen = FavScreen("FavScreen");
-
-  favScreen.execute();
+  favScreen.onSlideChange();
 }
 
-class FavScreen extends BaseScreen{
+class FavScreen extends BaseScreen with SliderMixin {
   FavScreen(super.screenName);
 
   // Override
 
-  void execute(){
-
+  void execute() {
     showLoadingAnimation();
   }
 
@@ -27,5 +26,4 @@ class FavScreen extends BaseScreen{
   void getData() {
     // TODO: implement getData
   }
-
 }
