@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:instant1/main.dart';
 import 'package:instant1/ui/home_screen.dart';
 
@@ -17,71 +18,146 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController passwordController = TextEditingController();
   var confirmPasswordController = TextEditingController();
 
+  // => Form Validation
+  // Define form key
+  // Wrap Column with Form
+  // Bind form key with Form
+  // Write your validators in TextFormField
+  // call form key for validate
+
+  final formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Login"),
+        backgroundColor: Colors.black,
+        elevation: 0,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
+      body: Container(
+        color: Colors.black,
         child: Column(
-          // Vertical   => Main
-          // Horizontal => Cross
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            TextFormField(
-              controller: emailController,
-              decoration: const InputDecoration(
-                labelText: 'Email',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.email),
+            const Padding(
+              padding: EdgeInsets.all(50),
+              child: Icon(
+                Icons.ac_unit_rounded,
+                size: 55,
+                color: Colors.white,
               ),
             ),
-            const SizedBox(height: 15),
-            TextFormField(
-              controller: passwordController,
-              obscureText: obscureText,
-              decoration: InputDecoration(
-                labelText: 'Password',
-                border: const OutlineInputBorder(),
-                prefixIcon: const Icon(Icons.lock),
-                suffixIcon: IconButton(
-                  onPressed: () {
-                    obscureText = !obscureText;
-                    setState(() {});
-                  },
-                  icon: Icon(
-                    obscureText ? Icons.visibility_off : Icons.visibility,
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 50,
+                  horizontal: 15
+                ),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(50),
+                    topRight: Radius.circular(50),
+                  )
+                ),
+                child: Form(
+                  key: formKey,
+                  child: Column(
+                    // Vertical   => Main
+                    // Horizontal => Cross
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      TextFormField(
+                        controller: emailController,
+                        decoration: const InputDecoration(
+                          labelText: 'Email',
+                          border: OutlineInputBorder(),
+                          prefixIcon: Icon(Icons.email),
+                        ),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "Email required";
+                          }
+                          // Not contain @ OR Not contain .
+                          if (!value.contains("@") || !value.contains(".")) {
+                            return "Invalid email!";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 15),
+                      TextFormField(
+                        controller: passwordController,
+                        obscureText: obscureText,
+                        decoration: InputDecoration(
+                          labelText: 'Password',
+                          border: const OutlineInputBorder(),
+                          prefixIcon: const Icon(Icons.lock),
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              obscureText = !obscureText;
+                              setState(() {});
+                            },
+                            icon: Icon(
+                              obscureText
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                            ),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "Password required";
+                          }
+                          if (value.length < 6) {
+                            return "Password must be at least 6 characters";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 15),
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            color: Colors.green,
+                            borderRadius: BorderRadius.circular(25)),
+                        child: const Text(
+                          "Forget password ?",
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      Row(
+                        // Main  => Horizontal
+                        // Cross => Vertical
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: () => login(),
+                              style: ElevatedButton.styleFrom(
+                                  shape: const StadiumBorder()),
+                              child: const Text("Login"),
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: OutlinedButton(
+                              onPressed: () => navToRegisterScreen(context),
+                              style: ElevatedButton.styleFrom(
+                                  shape: const StadiumBorder()),
+                              child: const Text("Register"),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 15),
-            Row(
-              // Main  => Horizontal
-              // Cross => Vertical
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () => login(),
-                    style:
-                        ElevatedButton.styleFrom(shape: const StadiumBorder()),
-                    child: const Text("Login"),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: OutlinedButton(
-                    onPressed: () => navToRegisterScreen(context),
-                    style:
-                        ElevatedButton.styleFrom(shape: const StadiumBorder()),
-                    child: const Text("Register"),
-                  ),
-                ),
-              ],
             ),
           ],
         ),
@@ -100,6 +176,11 @@ class _LoginScreenState extends State<LoginScreen> {
   // Bind a controller with TextFormFiled
   // Get data from the controller
   void login() {
+    // Not validate
+    if (!formKey.currentState!.validate()) {
+      return;
+    }
+
     String email = emailController.text;
     String password = passwordController.text;
 
@@ -110,9 +191,31 @@ class _LoginScreenState extends State<LoginScreen> {
           builder: (context) => HomeScreen(),
         ),
       );
-    }
-    else{
+    } else {
       print('Email or password wrong!');
+      displayToast('Email or password wrong!');
+      // displaySnackBar("Email or password wrong!");
     }
+  }
+
+  void displayToast(String message) {
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.CENTER,
+      backgroundColor: Colors.green,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+  }
+
+  void displaySnackBar(String message) {
+    var snackBar = SnackBar(
+      content: Text(message),
+    );
+
+// Find the ScaffoldMessenger in the widget tree
+// and use it to show a SnackBar.
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
