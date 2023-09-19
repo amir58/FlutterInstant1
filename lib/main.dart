@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instant1/ui/bmi/bmi_screen.dart';
-import 'package:instant1/ui/home_screen.dart';
+import 'package:instant1/ui/note/home_screen.dart';
 import 'package:instant1/ui/login_screen.dart';
 
 void main() {

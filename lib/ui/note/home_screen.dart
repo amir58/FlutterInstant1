@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:instant1/ui/note/add_note_screen.dart';
+import 'package:instant1/ui/note/edit_note_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -10,17 +12,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   List<String> notes = [
     "1 One",
-    "2",
-    "3 Three",
-    "4",
-    "5 Five",
-    "6",
-    "7 Seven",
-    "8",
-    "9 Nine",
-    "10",
-    "11 Eleven",
-    "12",
   ];
 
   @override
@@ -30,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text("Home"),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () => openAddNoteScreen(),
         child: const Icon(Icons.add),
       ),
       body: ListView.builder(
@@ -86,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(width: 10),
               Expanded(
                 child: ElevatedButton.icon(
-                  onPressed: () {},
+                  onPressed: () => editNote(index),
                   icon: const Icon(
                     Icons.edit,
                   ),
@@ -101,5 +92,35 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
     );
+  }
+
+  void openAddNoteScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AddNoteScreen(),
+      ),
+    ).then((value) => addNewNote(value));
+  }
+
+  void addNewNote(String value) {
+    notes.add(value);
+    setState(() {});
+  }
+
+  void editNote(int index) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditNoteScreen(
+          title: notes[index],
+        ),
+      ),
+    ).then((value) => updateCurrentNote(index, value));
+  }
+
+  updateCurrentNote(int index, value) {
+    notes[index] = value;
+    setState(() {});
   }
 }
