@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instant1/ui/note/model/note.dart';
 
 class AddNoteScreen extends StatefulWidget {
   const AddNoteScreen({super.key});
@@ -9,6 +10,8 @@ class AddNoteScreen extends StatefulWidget {
 
 class _AddNoteScreenState extends State<AddNoteScreen> {
   final titleController = TextEditingController();
+  final contentController = TextEditingController();
+
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -26,7 +29,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
               const SizedBox(height: 10),
               TextFormField(
                 controller: titleController,
-                textInputAction: TextInputAction.done,
+                textInputAction: TextInputAction.next,
                 keyboardType: TextInputType.text,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -38,6 +41,22 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                   }
                   if (value.length < 5) {
                     return "Title is very small!";
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 10),
+              TextFormField(
+                controller: contentController,
+                textInputAction: TextInputAction.done,
+                keyboardType: TextInputType.text,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  label: Text("Content"),
+                ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return "Content required";
                   }
                   return null;
                 },
@@ -64,6 +83,10 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
 
     String title = titleController.text;
 
-    Navigator.pop(context, title);
+    String content = contentController.text;
+
+    final note = Note(title, content);
+
+    Navigator.pop(context, note);
   }
 }

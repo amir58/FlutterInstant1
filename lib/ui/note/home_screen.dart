@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instant1/ui/note/add_note_screen.dart';
 import 'package:instant1/ui/note/edit_note_screen.dart';
+import 'package:instant1/ui/note/model/note.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -10,8 +11,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<String> notes = [
-    "1 One",
+  List<Note> myNotes =[
+    Note("Title", "Content"),
+    Note("Title 2", "Content 2"),
+    Note("Title 3", "Content 3"),
   ];
 
   @override
@@ -25,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: const Icon(Icons.add),
       ),
       body: ListView.builder(
-        itemCount: notes.length,
+        itemCount: myNotes.length,
         itemBuilder: (context, index) {
           print(index);
           return buildNoteItem(index);
@@ -45,16 +48,33 @@ class _HomeScreenState extends State<HomeScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 10,
-              horizontal: 5,
+            padding: const EdgeInsets.only(
+              left: 10,
+              right: 10,
+              top: 5,
+              bottom: 5
             ),
             child: Text(
-              notes[index],
+              myNotes[index].title,
               style: const TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
-                fontSize: 18,
+                fontSize: 22,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+                left: 10,
+                right: 10,
+                bottom: 5
+            ),
+            child: Text(
+              myNotes[index].content,
+              style: const TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.w400,
+                fontSize: 16,
               ),
             ),
           ),
@@ -63,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Expanded(
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    notes.removeAt(index);
+                    myNotes.removeAt(index);
                     setState(() {});
                   },
                   icon: const Icon(Icons.delete),
@@ -103,8 +123,8 @@ class _HomeScreenState extends State<HomeScreen> {
     ).then((value) => addNewNote(value));
   }
 
-  void addNewNote(String value) {
-    notes.add(value);
+  void addNewNote(Note value) {
+    myNotes.add(value);
     setState(() {});
   }
 
@@ -113,14 +133,15 @@ class _HomeScreenState extends State<HomeScreen> {
       context,
       MaterialPageRoute(
         builder: (context) => EditNoteScreen(
-          title: notes[index],
+          note: myNotes[index],
         ),
       ),
-    ).then((value) => updateCurrentNote(index, value));
+    ).then((value) =>
+        updateCurrentNote(index, value));
   }
 
-  updateCurrentNote(int index, value) {
-    notes[index] = value;
+  updateCurrentNote(int index,Note value) {
+    myNotes[index] = value;
     setState(() {});
   }
 }
