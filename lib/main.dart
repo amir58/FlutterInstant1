@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:instant1/ui/bmi/bmi_screen.dart';
+import 'package:instant1/ui/insta/insta_main_screen.dart';
 import 'package:instant1/ui/note/home_screen.dart';
 import 'package:instant1/ui/login_screen.dart';
 
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: const HomeScreen(),
+      home: const InstaMainScreen(),
     );
   }
 }
