@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:instant1/ui/insta/models/post.dart';
+import 'package:instant1/ui/insta/models/story_model.dart';
+import 'package:instant1/ui/insta/story_view_screen.dart';
 
 class InstaHomeScreen extends StatefulWidget {
   const InstaHomeScreen({super.key});
@@ -10,6 +13,45 @@ class InstaHomeScreen extends StatefulWidget {
 class _InstaHomeScreenState extends State<InstaHomeScreen> {
   String imageUrl =
       "https://hips.hearstapps.com/hmg-prod/images/gettyimages-1229892983-square.jpg";
+
+  List<StoryModel> stories = [
+    StoryModel(
+      1,
+      "Elon Musk",
+      "https://hips.hearstapps.com/hmg-prod/images/gettyimages-1229892983-square.jpg",
+      "dateTime",
+      true,
+    ),
+    StoryModel(
+      2,
+      "Steve Jobs",
+      "https://149366094.v2.pressablecdn.com/wp-content/uploads/2015/10/steve-jobs1.jpg",
+      "dateTime",
+      false,
+    )
+  ];
+
+  List<Post> posts = [
+    Post(
+      id: 1,
+      dateTime: "dateTime",
+      username: "Steve Jobs",
+      userImageUrl:
+          "https://149366094.v2.pressablecdn.com/wp-content/uploads/2015/10/steve-jobs1.jpg",
+      postImageUrl:
+          "https://upload.wikimedia.org/wikipedia/commons/d/dc/Steve_Jobs_Headshot_2010-CROP_%28cropped_2%29.jpg",
+      likedBy: 'amir_mohammed',
+    ),
+    Post(
+      id: 2,
+      dateTime: "dateTime",
+      username: "Elon Musk",
+      userImageUrl:
+          "https://hips.hearstapps.com/hmg-prod/images/gettyimages-1229892983-square.jpg",
+      postImageUrl: "https://images.wsj.net/im-856938",
+      likedBy: 'mark',
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -54,22 +96,55 @@ class _InstaHomeScreenState extends State<InstaHomeScreen> {
     return SizedBox(
       height: 75,
       child: ListView.builder(
-        itemCount: 10,
+        itemCount: stories.length + 1,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           return index == 0
               ? yourStoryWidget()
-              : Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child: Column(
-                    children: [
-                      CircleAvatar(
-                        radius: 25,
-                        backgroundImage: NetworkImage(imageUrl),
-                      ),
-                      const SizedBox(height: 5),
-                      const Text("Elon Musk"),
-                    ],
+              : InkWell(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const StoryViewScreen(),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: Column(
+                      children: [
+                        Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Visibility(
+                              visible: !stories[index - 1].shown,
+                              child: CircleAvatar(
+                                radius: 27,
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        Color(0xFFf9ce34),
+                                        Color(0xFFee2a7b),
+                                        Color(0xFFee2a7b),
+                                        Color(0xFF6228d7),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            CircleAvatar(
+                              radius: !stories[index - 1].shown ? 24 : 27,
+                              backgroundImage:
+                                  NetworkImage(stories[index - 1].userImageUrl),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 5),
+                        Text(stories[index - 1].username),
+                      ],
+                    ),
                   ),
                 );
         },
@@ -86,7 +161,7 @@ class _InstaHomeScreenState extends State<InstaHomeScreen> {
             alignment: AlignmentDirectional.bottomEnd,
             children: [
               CircleAvatar(
-                radius: 25,
+                radius: 27,
                 backgroundImage: NetworkImage(imageUrl),
               ),
               const CircleAvatar(
@@ -96,7 +171,10 @@ class _InstaHomeScreenState extends State<InstaHomeScreen> {
               const CircleAvatar(
                 radius: 9,
                 backgroundColor: Colors.blue,
-                child: Icon(Icons.add, size: 16,),
+                child: Icon(
+                  Icons.add,
+                  size: 16,
+                ),
               ),
             ],
           ),
@@ -110,7 +188,9 @@ class _InstaHomeScreenState extends State<InstaHomeScreen> {
   Widget postsView() {
     return Expanded(
       child: ListView.builder(
+        itemCount: posts.length,
         itemBuilder: (context, index) {
+          Post post = posts[index];
           return Container(
             child: Column(
               children: [
@@ -119,14 +199,16 @@ class _InstaHomeScreenState extends State<InstaHomeScreen> {
                   child: Row(
                     children: [
                       CircleAvatar(
-                        backgroundImage: NetworkImage(imageUrl),
+                        backgroundImage: NetworkImage(post.userImageUrl),
                       ),
                       const SizedBox(width: 5),
-                      const Expanded(
+                      Expanded(
                         child: Text(
-                          "elon.musk",
-                          style: TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.bold),
+                          post.username,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                       IconButton(
@@ -137,7 +219,7 @@ class _InstaHomeScreenState extends State<InstaHomeScreen> {
                   ),
                 ),
                 Image.network(
-                  "https://images.wsj.net/im-856938",
+                  post.postImageUrl,
                   height: 300,
                   width: double.infinity,
                   fit: BoxFit.fitWidth,
@@ -184,12 +266,13 @@ class _InstaHomeScreenState extends State<InstaHomeScreen> {
                         text: TextSpan(
                           text: 'Liked by',
                           style: DefaultTextStyle.of(context).style,
-                          children: const <TextSpan>[
+                          children: <TextSpan>[
                             TextSpan(
-                                text: ' amir_mohammed',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                            TextSpan(text: ' and'),
-                            TextSpan(
+                                text: ' ${post.likedBy}',
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold)),
+                            const TextSpan(text: ' and'),
+                            const TextSpan(
                                 text: ' others',
                                 style: TextStyle(fontWeight: FontWeight.bold)),
                           ],
