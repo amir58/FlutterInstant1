@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:instant1/ui/login_screen.dart';
 import 'package:instant1/ui/note/add_note_screen.dart';
 import 'package:instant1/ui/note/edit_note_screen.dart';
 import 'package:instant1/ui/note/model/note.dart';
@@ -11,7 +13,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<Note> myNotes =[
+  List<Note> myNotes = [
     Note("Title", "Content"),
     Note("Title 2", "Content 2"),
     Note("Title 3", "Content 3"),
@@ -22,6 +24,21 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Home"),
+        actions: [
+          IconButton(
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const LoginScreen(),
+                ),
+              );
+            },
+            icon: const Icon(Icons.logout),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => openAddNoteScreen(),
@@ -48,12 +65,8 @@ class _HomeScreenState extends State<HomeScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(
-              left: 10,
-              right: 10,
-              top: 5,
-              bottom: 5
-            ),
+            padding:
+                const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
             child: Text(
               myNotes[index].title,
               style: const TextStyle(
@@ -64,11 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(
-                left: 10,
-                right: 10,
-                bottom: 5
-            ),
+            padding: const EdgeInsets.only(left: 10, right: 10, bottom: 5),
             child: Text(
               myNotes[index].content,
               style: const TextStyle(
@@ -136,11 +145,10 @@ class _HomeScreenState extends State<HomeScreen> {
           note: myNotes[index],
         ),
       ),
-    ).then((value) =>
-        updateCurrentNote(index, value));
+    ).then((value) => updateCurrentNote(index, value));
   }
 
-  updateCurrentNote(int index,Note value) {
+  updateCurrentNote(int index, Note value) {
     myNotes[index] = value;
     setState(() {});
   }

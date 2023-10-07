@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:instant1/main.dart';
@@ -49,17 +50,14 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             Expanded(
               child: Container(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 50,
-                  horizontal: 15
-                ),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 50, horizontal: 15),
                 decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(50),
-                    topRight: Radius.circular(50),
-                  )
-                ),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(50),
+                      topRight: Radius.circular(50),
+                    )),
                 child: Form(
                   key: formKey,
                   child: Column(
@@ -118,14 +116,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const SizedBox(height: 15),
                       Container(
+                        alignment: AlignmentDirectional.centerEnd,
                         padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                            color: Colors.green,
-                            borderRadius: BorderRadius.circular(25)),
                         child: const Text(
                           "Forget password ?",
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.black,
                           ),
                         ),
                       ),
@@ -184,18 +180,48 @@ class _LoginScreenState extends State<LoginScreen> {
     String email = emailController.text;
     String password = passwordController.text;
 
-    if (email == "amir@gmail.com" && password == "123123") {
+    FirebaseAuth.instance
+        .signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    )
+        .then((value) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => HomeScreen(),
         ),
       );
-    } else {
-      print('Email or password wrong!');
-      displayToast('Email or password wrong!');
-      // displaySnackBar("Email or password wrong!");
-    }
+    }).catchError((error) {
+      print("Error => ${error}");
+
+      if (error is FirebaseAuthException) {
+        print("Error => ${error.code}");
+        if (error.code == 'user-not-found') {
+          displayToast('No user found for that email.');
+        } else if (error.code == 'wrong-password') {
+          displayToast('Wrong password provided for that user.');
+        } else if (error.code == 'too-many-requests') {
+          displayToast(
+              'We have blocked all requests from this device due to unusual activity. Try again later.');
+        }
+      } else {
+        displayToast(error.toString());
+      }
+    });
+
+    // if (email == "amir@gmail.com" && password == "123123") {
+    //   Navigator.pushReplacement(
+    //     context,
+    //     MaterialPageRoute(
+    //       builder: (context) => HomeScreen(),
+    //     ),
+    //   );
+    // } else {
+    //   print('Email or password wrong!');
+    //   displayToast('Email or password wrong!');
+    //   // displaySnackBar("Email or password wrong!");
+    // }
   }
 
   void displayToast(String message) {

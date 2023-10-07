@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "678721258811",
+    "project_id": "instant1-4762b",
+    "storage_bucket": "instant1-4762b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:678721258811:android:d9f83a6d9309149e9ee31e",
+        "android_client_info": {
+          "package_name": "com.amirmohammed.instant1.instant1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDe97SfVfqts-aXMl3xzzR0mlItblzdYIA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
