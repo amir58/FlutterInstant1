@@ -93,7 +93,7 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
     String title = titleController.text;
     String content = contentController.text;
 
-    final note = Note(title, content);
+    final note = Note("",title, content);
 
     Navigator.pop(context, note);
   }

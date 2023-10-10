@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instant1/ui/note/model/note.dart';
 
@@ -13,6 +14,8 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
   final contentController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
+
+  final firestore = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -85,8 +88,14 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
 
     String content = contentController.text;
 
-    final note = Note(title, content);
+    String id = DateTime.now().millisecondsSinceEpoch.toString();
 
-    Navigator.pop(context, note);
+    final note = Note(id, title, content);
+
+    firestore.collection("notes").doc(id).set(note.toMap()).then((value) {
+      Navigator.pop(context);
+    }).catchError((error) {
+
+    });
   }
 }

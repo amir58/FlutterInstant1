@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:instant1/ui/login_screen.dart';
@@ -13,11 +14,28 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<Note> myNotes = [
-    Note("Title", "Content"),
-    Note("Title 2", "Content 2"),
-    Note("Title 3", "Content 3"),
-  ];
+  List<Note> myNotes = [];
+  final firestore = FirebaseFirestore.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    getNotes();
+  }
+
+  void getNotes() {
+    firestore.collection("notes").get().then((value) {
+      myNotes.clear();
+      for (var doc in value.docs) {
+        final note = Note.fromMap(doc.data());
+        myNotes.add(note);
+      }
+      setState(() {});
+
+    }).catchError((error) {
+      print(error);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,6 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Expanded(
                 child: ElevatedButton.icon(
                   onPressed: () {
+                    firestore.collection("notes").doc(myNotes[index].id).delete();
                     myNotes.removeAt(index);
                     setState(() {});
                   },
@@ -129,7 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
       MaterialPageRoute(
         builder: (context) => AddNoteScreen(),
       ),
-    ).then((value) => addNewNote(value));
+    ).then((value) => getNotes());
   }
 
   void addNewNote(Note value) {
