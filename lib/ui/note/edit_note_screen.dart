@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:instant1/ui/note/model/note.dart';
 
@@ -13,6 +14,8 @@ class EditNoteScreen extends StatefulWidget {
 class _EditNoteScreenState extends State<EditNoteScreen> {
   final titleController = TextEditingController();
   final contentController = TextEditingController();
+
+  final firestore = FirebaseFirestore.instance;
 
   final formKey = GlobalKey<FormState>();
 
@@ -93,8 +96,13 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
     String title = titleController.text;
     String content = contentController.text;
 
-    final note = Note("",title, content);
+    widget.note.title = title;
+    widget.note.content = content;
 
-    Navigator.pop(context, note);
+    firestore.collection("notes")
+        .doc(widget.note.id)
+        .update(widget.note.toMap());
+
+    Navigator.pop(context, widget.note);
   }
 }

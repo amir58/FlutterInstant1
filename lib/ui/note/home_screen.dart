@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:instant1/ui/login_screen.dart';
+import 'package:instant1/ui/note/login_screen.dart';
 import 'package:instant1/ui/note/add_note_screen.dart';
 import 'package:instant1/ui/note/edit_note_screen.dart';
 import 'package:instant1/ui/note/model/note.dart';
+import 'package:instant1/ui/note/profile_screen.dart';
+
+// CRUD => Create, Read, Update, Delete
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -31,7 +34,6 @@ class _HomeScreenState extends State<HomeScreen> {
         myNotes.add(note);
       }
       setState(() {});
-
     }).catchError((error) {
       print(error);
     });
@@ -43,6 +45,17 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text("Home"),
         actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ProfileScreen(),
+                ),
+              );
+            },
+            icon: const Icon(Icons.person),
+          ),
           IconButton(
             onPressed: () {
               FirebaseAuth.instance.signOut();
@@ -110,7 +123,10 @@ class _HomeScreenState extends State<HomeScreen> {
               Expanded(
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    firestore.collection("notes").doc(myNotes[index].id).delete();
+                    firestore
+                        .collection("notes")
+                        .doc(myNotes[index].id)
+                        .delete();
                     myNotes.removeAt(index);
                     setState(() {});
                   },

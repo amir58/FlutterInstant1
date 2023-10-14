@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.amirmohammed.instant1.instant1">
    <application
+        android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true"
         android:label="instant1"
         android:name="${applicationName}"
