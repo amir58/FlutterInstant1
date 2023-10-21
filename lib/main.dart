@@ -6,6 +6,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:instant1/notifications.dart';
+import 'package:instant1/shared.dart';
 import 'package:instant1/ui/bmi/bmi_screen.dart';
 import 'package:instant1/ui/insta/insta_main_screen.dart';
 import 'package:instant1/ui/note/home_screen.dart';
@@ -22,6 +23,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await PreferenceUtils.init();
 
   initNotifications();
 

@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:instant1/shared.dart';
 import 'package:instant1/ui/note/login_screen.dart';
 import 'package:instant1/ui/note/add_note_screen.dart';
 import 'package:instant1/ui/note/edit_note_screen.dart';
 import 'package:instant1/ui/note/model/note.dart';
 import 'package:instant1/ui/note/profile_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // CRUD => Create, Read, Update, Delete
 
@@ -19,15 +21,21 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   List<Note> myNotes = [];
   final firestore = FirebaseFirestore.instance;
+  final auth = FirebaseAuth.instance;
 
   @override
   void initState() {
     super.initState();
     getNotes();
+    getLoggedIn();
   }
 
   void getNotes() {
-    firestore.collection("notes").get().then((value) {
+    firestore
+        .collection("notes")
+        .where('userId', isEqualTo: auth.currentUser!.uid)
+        .get()
+        .then((value) {
       myNotes.clear();
       for (var doc in value.docs) {
         final note = Note.fromMap(doc.data());
@@ -59,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             onPressed: () {
               FirebaseAuth.instance.signOut();
-
+              saveLogout();
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
@@ -186,5 +194,14 @@ class _HomeScreenState extends State<HomeScreen> {
   updateCurrentNote(int index, Note value) {
     myNotes[index] = value;
     setState(() {});
+  }
+
+  void getLoggedIn() async {
+    final loggedIn = PreferenceUtils.getBool('loggedIn');
+    print('loggedIn => $loggedIn');
+  }
+
+  Future<void> saveLogout() async {
+    PreferenceUtils.setBool('loggedIn', false);
   }
 }

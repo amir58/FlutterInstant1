@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:instant1/shared.dart';
 import 'package:instant1/ui/note/home_screen.dart';
 import 'package:instant1/ui/note/register_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -186,6 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
       password: password,
     )
         .then((value) {
+      saveLoggedIn();
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -243,5 +246,9 @@ class _LoginScreenState extends State<LoginScreen> {
 // Find the ScaffoldMessenger in the widget tree
 // and use it to show a SnackBar.
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  void saveLoggedIn() async {
+    PreferenceUtils.setBool('loggedIn', true);
   }
 }
