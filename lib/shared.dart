@@ -1,6 +1,11 @@
 import 'dart:async' show Future;
 import 'package:shared_preferences/shared_preferences.dart';
 
+enum PrefKeys{
+  profileData,
+  loggedIn,
+}
+
 class PreferenceUtils {
   static Future<SharedPreferences> get _instance async {
     return _prefsInstance ??= await SharedPreferences.getInstance();
@@ -14,21 +19,21 @@ class PreferenceUtils {
     return _prefsInstance!;
   }
 
-  static String getString(String key, [String defValue = '']) {
-    return _prefsInstance?.getString(key) ?? defValue;
+  static String getString(PrefKeys key, [String defValue = '']) {
+    return _prefsInstance?.getString(key.name) ?? defValue;
   }
 
-  static Future<bool> setString(String key, String value) async {
+  static Future<bool> setString(PrefKeys key, String value) async {
     var prefs = await _instance;
-    return prefs.setString(key, value);
+    return prefs.setString(key.name, value);
   }
 
-  static bool getBool(String key, [bool defValue = false]) {
-    return _prefsInstance?.getBool(key) ?? defValue;
+  static bool getBool(PrefKeys key, [bool defValue = false]) {
+    return _prefsInstance?.getBool(key.name) ?? defValue;
   }
 
-  static Future<bool> setBool(String key, bool value) async {
+  static Future<bool> setBool(PrefKeys key, bool value) async {
     var prefs = await _instance;
-    return prefs.setBool(key, value);
+    return prefs.setBool(key.name, value);
   }
 }

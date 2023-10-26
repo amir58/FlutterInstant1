@@ -197,11 +197,11 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void getLoggedIn() async {
-    final loggedIn = PreferenceUtils.getBool('loggedIn');
+    final loggedIn = PreferenceUtils.getBool(PrefKeys.loggedIn);
     print('loggedIn => $loggedIn');
   }
 
   Future<void> saveLogout() async {
-    PreferenceUtils.setBool('loggedIn', false);
+    PreferenceUtils.setBool(PrefKeys.loggedIn, false);
   }
 }

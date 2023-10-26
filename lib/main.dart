@@ -9,6 +9,7 @@ import 'package:instant1/notifications.dart';
 import 'package:instant1/shared.dart';
 import 'package:instant1/ui/bmi/bmi_screen.dart';
 import 'package:instant1/ui/insta/insta_main_screen.dart';
+import 'package:instant1/ui/note/database/note_database.dart';
 import 'package:instant1/ui/note/home_screen.dart';
 import 'package:instant1/ui/note/login_screen.dart';
 
@@ -24,6 +25,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await PreferenceUtils.init();
+  await NoteDatabase.init();
 
   initNotifications();
 

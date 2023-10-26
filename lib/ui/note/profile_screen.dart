@@ -160,11 +160,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> saveProfileData(Map<String, dynamic> data) async {
     final jsonData = jsonEncode(data);
-    PreferenceUtils.setString('profileData', jsonData);
+    PreferenceUtils.setString(PrefKeys.profileData, jsonData);
   }
 
   void getProfileDataFromLocalSource() async {
-    final jsonData = PreferenceUtils.getString('profileData');
+    final jsonData = PreferenceUtils.getString(PrefKeys.profileData);
     final data = jsonDecode(jsonData);
     updateUi(data);
   }
